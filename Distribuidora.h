@@ -22,8 +22,13 @@ public:
     Distribuidora();
     Distribuidora(string cCheck, vector<Producto> cProductos);
 
-    void abastecer();
-    void vender();
+    double getGastos();
+
+    void abastecer(Producto producto);
+    void vender(Producto producto);
+    bool estaproducto(Producto producto);
+    void agregarproducto(Producto producto);
+    void Productosexistentes();
 
     friend ostream & operator<<(ostream &os, const Distribuidora &d);
     ~Distribuidora();
