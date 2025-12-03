@@ -42,6 +42,10 @@ ostream & operator<<(ostream &os, const Producto &d) {
     cout << "Cantidad del producto: " << d.cantidad << endl;
     cout << "Precio del producto: " << d.precio << endl;
 }
+
+double Producto::valortotal() {
+    return cantidad * precio;
+}
 Producto::~Producto() {
 
 }
