@@ -46,8 +46,11 @@ void Cliente::compraRealizada() {
 }
 
 ostream &operator<<(ostream &os, const Cliente &obj) {
-    os << "Cliente " << obj.id << "\n Nombre: " << obj.nombre << "\n Ubicacion: " << obj.ubicacion <<
-            "\n Numero de compras: " << obj.compras;
+    os << "Cliente " << obj.id << endl;
+    os << "Nombre: " << obj.nombre << endl;
+    os << "Ubicacion: " << obj.ubicacion << endl;
+    os << "Numero de compras: " << obj.compras << endl;;
+    return os;
 }
 
 Cliente::~Cliente(){}

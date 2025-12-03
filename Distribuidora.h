@@ -7,6 +7,7 @@
 #include <string>
 #include <vector>
 #include "Producto.h"
+#include "Cliente.h"
 #include <iostream>
 
 using namespace std;
@@ -21,16 +22,17 @@ private:
 
 public:
     Distribuidora();
-    Distribuidora(string cCheck, vector<Producto> cProductos);
+    Distribuidora(string cCheck, vector<Producto> cProductos, vector<Cliente> cClientes);
 
     double getGastos();
 
     void abastecer(Producto b, int a);
-    void vender(Cliente cliente, Producto p, int a);
+    void vender(Cliente cliente, string p, int a);
     bool estaProducto(string nombre);
-    void agregarProducto(const string& Fichero);
+    void agregarProductos(const string& Fichero);
     void agregarClientes(const string& Fichero);
     void productosExistentes();
+    void mostrarClientes();
 
     friend ostream & operator<<(ostream &os, const Distribuidora &d);
     ~Distribuidora();

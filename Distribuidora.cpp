@@ -6,10 +6,11 @@
 #include "Producto.h"
 #include <iostream>
 #include <fstream>
+#include <sstream>
 
 Distribuidora::Distribuidora():check(""),productos(),gastos(0.0){}
 
-Distribuidora::Distribuidora(string cCheck, vector<Producto> cProductos, vector <Clientes> cClientes) {
+Distribuidora::Distribuidora(string cCheck, vector<Producto> cProductos, vector <Cliente> cClientes) {
     this->check = cCheck;
     this->productos = cProductos;
     this ->clientes = cClientes;
@@ -45,10 +46,10 @@ void Distribuidora::abastecer(Producto a, int b) {
     }
 }
 
-void Distribuidora::vender(Cliente cliente, Producto p, int a) {
-    if (estaProducto(p.getNombre())== true) {
+void Distribuidora::vender(Cliente cliente, string p, int a) {
+    if (estaProducto(p)){
         for (auto busca : this->productos) {
-            if (busca.getNombre() == p.getNombre()) {
+            if (busca.getNombre() == p) {
                 if (busca.getCantidad() < a ) {
                     cout <<"No hay tanto producto para vender" << endl;
                 }
@@ -66,7 +67,7 @@ void Distribuidora::vender(Cliente cliente, Producto p, int a) {
     }
 }
 
-void Distribuidora::agregarProducto(const string & fichero)  {
+void Distribuidora::agregarProductos(const string & fichero)  {
     ifstream fich(fichero);
     if (!fich.is_open()) {
         cout << "No se abrió el fichero. " << endl;
@@ -75,9 +76,14 @@ void Distribuidora::agregarProducto(const string & fichero)  {
     string nombre;
     int cantidad;
     double precio;
-    while (fich >> nombre >> cantidad >> precio) {
-        Producto p(nombre,cantidad,precio);
-        productos.push_back(p);
+    string linea;
+    getline(fich,linea);
+    while (getline(fich,linea)) {
+        for (char&c:linea)
+            if (c==',') c = ' ';
+        stringstream ss(linea);
+        ss >> nombre >> cantidad >> precio;
+        productos.emplace_back(nombre,cantidad,precio);
     }
     fich.close();
 };
@@ -90,16 +96,27 @@ void Distribuidora::agregarClientes(const string & fichero)  {
     }
     string nombre,id,ubicacion;
     int compras;
-    while (fich >> nombre >> id >> ubicacion >> compras) {
-        Cliente c(nombre,id,ubicacion,compras);
-        clientes.push_back(c);
+    string linea;
+    getline(fich,linea);
+    while (getline(fich,linea)) {
+        for (char&c:linea)
+            if (c==',') c = ' ';
+        stringstream ss(linea);
+        ss >> nombre >> id >> ubicacion >> compras;
+        clientes.emplace_back(nombre,id,ubicacion,compras);
     }
     fich.close();
 };
 
 void Distribuidora::productosExistentes() {
     for (auto busca : this->productos) {
-        cout << busca.getNombre() << " | ";
+        cout << busca << endl;
+    }
+}
+
+void Distribuidora::mostrarClientes() {
+    for (auto busca : this->clientes) {
+        cout << busca << endl;
     }
 }
 Distribuidora::~Distribuidora() {}

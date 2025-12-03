@@ -38,9 +38,10 @@ void Producto::setPrecio(double p) {
 }
 
 ostream & operator<<(ostream &os, const Producto &d) {
-    cout << "Nombre del producto: " << d.nombre << endl;
-    cout << "Cantidad del producto: " << d.cantidad << endl;
-    cout << "Precio del producto: " << d.precio << endl;
+    os << "Nombre del producto: " << d.nombre << endl;
+    os << "Cantidad del producto: " << d.cantidad << endl;
+    os << "Precio del producto: " << d.precio << endl;
+    return os;
 }
 
 double Producto::valortotal() {
