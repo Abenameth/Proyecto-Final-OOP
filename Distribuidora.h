@@ -15,6 +15,7 @@ class Distribuidora {
 private:
     string check;
     vector<Producto> productos;
+    vector<Cliente> clientes;
     double gastos;
     double capital = 10000.0;
 
@@ -24,11 +25,12 @@ public:
 
     double getGastos();
 
-    void abastecer(Producto producto);
-    void vender(Producto producto);
-    bool estaproducto(Producto producto);
-    void agregarproducto(Producto producto);
-    void Productosexistentes();
+    void abastecer(Producto b, int a);
+    void vender(Cliente cliente, Producto p, int a);
+    bool estaProducto(string nombre);
+    void agregarProducto(const string& Fichero);
+    void agregarClientes(const string& Fichero);
+    void productosExistentes();
 
     friend ostream & operator<<(ostream &os, const Distribuidora &d);
     ~Distribuidora();
