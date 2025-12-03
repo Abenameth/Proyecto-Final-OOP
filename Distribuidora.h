@@ -33,6 +33,8 @@ public:
     void agregarClientes(const string& Fichero);
     void productosExistentes();
     void mostrarClientes();
+    void exportarProductos();
+    void exportarClientes();
 
     friend ostream & operator<<(ostream &os, const Distribuidora &d);
     ~Distribuidora();

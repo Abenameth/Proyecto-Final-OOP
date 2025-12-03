@@ -119,5 +119,30 @@ void Distribuidora::mostrarClientes() {
         cout << busca << endl;
     }
 }
+void Distribuidora::exportarProductos() {
+    ofstream fich;
+    fich.open("./exportproductos.csv");
+    if (!fich.is_open()) {
+        cout <<"No se abrio fichero";
+        return;
+    }
+    fich << "Nombre,Cantidad,Precio" << endl;
+    for (auto busca : this->productos) {
+        fich << busca.getNombre() << ","<< busca.getCantidad() << ","<< busca.getPrecio() << endl;
+    }
+}
+
+void Distribuidora::exportarClientes() {
+    ofstream fich;
+    fich.open("./exportclientes.csv");
+    if (!fich.is_open()) {
+        cout <<"No se abrio fichero";
+        return;
+    }
+    fich << "Nombre,ID,Ubicacion,Compras";
+    for (auto busca : this->clientes) {
+        fich << busca.getNombre() << "," <<busca.getId()<< "," << busca.getUbicacion()<< "," << busca.getCompras()<< "," << endl;
+    }
+}
 Distribuidora::~Distribuidora() {}
 
