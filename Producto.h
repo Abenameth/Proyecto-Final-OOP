@@ -25,7 +25,6 @@ public:
     void setNombre(string n);
     void setCantidad(int c);
     void setPrecio(double p);
-    double valortotal();
 
     friend ostream & operator<<(ostream &os, const Producto &d);
 
