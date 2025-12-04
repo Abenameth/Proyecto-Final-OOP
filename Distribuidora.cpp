@@ -37,12 +37,12 @@ bool Distribuidora::estaCliente(string name) {
 void Distribuidora::abastecer(string a, int b) {
     if (estaProducto(a)) {
     for (auto &busca : this->productos) {
-        if (busca.getNombre() == a && busca.valortotal() < capital) {
+        if (busca.getNombre() == a && (busca.getPrecio() * b) < capital) {
             busca.setCantidad(busca.getCantidad() + b);
-            capital = capital - busca.valortotal();
-            gastos = gastos + busca.valortotal();
+            capital -= busca.getPrecio() * b;
+            gastos += busca.getPrecio() * b;
         }
-        else if (busca.getNombre() == a && busca.valortotal() > capital) {
+        else if (busca.getNombre() == a && (b * busca.getPrecio())> capital) {
             cout << "dinero insuficiente para abastecer"<<endl;
         }
     }
@@ -142,13 +142,13 @@ void Distribuidora::agregarCliente(string cNombre, string cId, string cUbicacion
 }
 
 void Distribuidora::productosExistentes() {
-    for (auto busca : this->productos) {
+    for (const auto &busca : this->productos) {
         cout << busca << endl;
     }
 }
 
 void Distribuidora::mostrarClientes() {
-    for (auto busca : this->clientes) {
+    for (const auto &busca : this->clientes) {
         cout << busca << endl;
     }
 }
@@ -160,7 +160,7 @@ void Distribuidora::exportarProductos() {
         return;
     }
     fich << "Nombre,Cantidad,Precio" << endl;
-    for (auto & busca : this->productos) {
+    for (auto &busca : this->productos) {
         fich << busca.getNombre() << ","<< busca.getCantidad() << ","<< busca.getPrecio() << endl;
     }
 }
@@ -176,6 +176,12 @@ void Distribuidora::exportarClientes() {
     for (auto & busca : this->clientes) {
         fich << busca.getNombre() << "," <<busca.getId()<< "," << busca.getUbicacion()<< "," << busca.getCompras()<< endl;
     }
+}
+
+ostream & operator<<(ostream &os, const Distribuidora &d) {
+    os << "Capital disponible: " << d.capital << endl;
+    os << "Gastos acumulados:  " << d.gastos << endl;
+    return os;
 }
 Distribuidora::~Distribuidora() {}
 
