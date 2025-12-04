@@ -28,7 +28,7 @@ bool Distribuidora::estaProducto(string name) {
 }
 
 bool Distribuidora::estaCliente(string name) {
-    for (auto&e:productos) {
+    for (auto&e:clientes) {
         if (name == e.getNombre())return true;
     }
     return false;
@@ -60,15 +60,16 @@ void Distribuidora::vender(string c, string p, int a) {
                     cout <<"No hay tanto producto para vender" << endl;
                 }
                 else {
+                    capital += a*busca.getPrecio();
                     busca.setCantidad(busca.getCantidad() - a);
-                    capital += busca.valortotal();
                     cout << "Venta realizada" << endl;
                 }
             }
         }
         for (auto & cliente : this->clientes) {
-            if (cliente.getNombre() == p) {
+            if (cliente.getNombre() == c) {
                 cliente.compraRealizada();
+                break;
             }
         }
     }
@@ -93,6 +94,7 @@ void Distribuidora::agregarProductos(const string & fichero)  {
     string linea;
     getline(fich,linea);
     while (getline(fich,linea)) {
+        if (linea.empty()) continue;
         for (char&c:linea)
             if (c==',') c = ' ';
         stringstream ss(linea);
@@ -118,6 +120,7 @@ void Distribuidora::agregarClientes(const string & fichero)  {
     string linea;
     getline(fich,linea);
     while (getline(fich,linea)) {
+        if (linea.empty()) continue;
         for (char&c:linea)
             if (c==',') c = ' ';
         stringstream ss(linea);
@@ -157,7 +160,7 @@ void Distribuidora::exportarProductos() {
         return;
     }
     fich << "Nombre,Cantidad,Precio" << endl;
-    for (auto busca : this->productos) {
+    for (auto & busca : this->productos) {
         fich << busca.getNombre() << ","<< busca.getCantidad() << ","<< busca.getPrecio() << endl;
     }
 }
@@ -169,9 +172,9 @@ void Distribuidora::exportarClientes() {
         cout <<"No se abrio fichero";
         return;
     }
-    fich << "Nombre,ID,Ubicacion,Compras";
-    for (auto busca : this->clientes) {
-        fich << busca.getNombre() << "," <<busca.getId()<< "," << busca.getUbicacion()<< "," << busca.getCompras()<< "," << endl;
+    fich << "Nombre,ID,Ubicacion,Compras"<<endl;
+    for (auto & busca : this->clientes) {
+        fich << busca.getNombre() << "," <<busca.getId()<< "," << busca.getUbicacion()<< "," << busca.getCompras()<< endl;
     }
 }
 Distribuidora::~Distribuidora() {}
