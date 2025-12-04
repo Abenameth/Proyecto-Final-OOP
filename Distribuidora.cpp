@@ -8,6 +8,7 @@
 #include <fstream>
 #include <sstream>
 
+
 Distribuidora::Distribuidora():productos(),gastos(0.0){}
 
 Distribuidora::Distribuidora(vector<Producto> cProductos, vector <Cliente> cClientes) {
@@ -82,6 +83,10 @@ void Distribuidora::agregarProductos(const string & fichero)  {
         cout << "No se abrió el fichero. " << endl;
         return;
     }
+    if (fich.peek() == ifstream::traits_type::eof()) {
+        cout << "El archivo está vacío o no tiene el formato adecuado" << endl;
+        return;
+    }
     string nombre;
     int cantidad;
     double precio;
@@ -91,6 +96,7 @@ void Distribuidora::agregarProductos(const string & fichero)  {
         for (char&c:linea)
             if (c==',') c = ' ';
         stringstream ss(linea);
+
         ss >> nombre >> cantidad >> precio;
         productos.emplace_back(nombre,cantidad,precio);
     }
@@ -101,7 +107,11 @@ void Distribuidora::agregarClientes(const string & fichero)  {
     ifstream fich(fichero);
     if (!fich.is_open()) {
         cout << "No se abrió el fichero. " << endl;
-        return;
+        exit(1);
+    }
+    if (fich.peek() == ifstream::traits_type::eof()) {
+        cout << "El archivo está vacío o no tiene el formato adecuado" << endl;
+        exit(2);
     }
     string nombre,id,ubicacion;
     int compras;
@@ -111,7 +121,10 @@ void Distribuidora::agregarClientes(const string & fichero)  {
         for (char&c:linea)
             if (c==',') c = ' ';
         stringstream ss(linea);
-        ss >> nombre >> id >> ubicacion >> compras;
+        if (!(ss >> nombre >> id >> ubicacion >> compras)) {
+            cout << "Error en formato del archivo." << endl;
+            exit(3);
+        };
         clientes.emplace_back(nombre,id,ubicacion,compras);
     }
     fich.close();
