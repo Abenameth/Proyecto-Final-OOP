@@ -8,10 +8,9 @@
 #include <fstream>
 #include <sstream>
 
-Distribuidora::Distribuidora():check(""),productos(),gastos(0.0){}
+Distribuidora::Distribuidora():productos(),gastos(0.0){}
 
-Distribuidora::Distribuidora(string cCheck, vector<Producto> cProductos, vector <Cliente> cClientes) {
-    this->check = cCheck;
+Distribuidora::Distribuidora(vector<Producto> cProductos, vector <Cliente> cClientes) {
     this->productos = cProductos;
     this ->clientes = cClientes;
 }
@@ -27,16 +26,22 @@ bool Distribuidora::estaProducto(string name) {
     return false;
 }
 
-void Distribuidora::abastecer(Producto a, int b) {
-    if (estaProducto(a.getNombre()) == true) {
-    for (auto &busca : this->productos) {
-        busca.setCantidad(busca.getCantidad() + b);
-        if (busca.getNombre() == a.getNombre() && busca.valortotal() < capital) {
+bool Distribuidora::estaCliente(string name) {
+    for (auto&e:productos) {
+        if (name == e.getNombre())return true;
+    }
+    return false;
+}
 
+void Distribuidora::abastecer(string a, int b) {
+    if (estaProducto(a)) {
+    for (auto &busca : this->productos) {
+        if (busca.getNombre() == a && busca.valortotal() < capital) {
+            busca.setCantidad(busca.getCantidad() + b);
             capital = capital - busca.valortotal();
             gastos = gastos + busca.valortotal();
         }
-        else if (busca.getNombre() == a.getNombre() && busca.valortotal() > capital) {
+        else if (busca.getNombre() == a && busca.valortotal() > capital) {
             cout << "dinero insuficiente para abastecer"<<endl;
         }
     }
@@ -46,9 +51,9 @@ void Distribuidora::abastecer(Producto a, int b) {
     }
 }
 
-void Distribuidora::vender(Cliente cliente, string p, int a) {
-    if (estaProducto(p)){
-        for (auto busca : this->productos) {
+void Distribuidora::vender(string c, string p, int a) {
+    if (estaProducto(p)&& estaCliente(c)){
+        for (auto & busca : this->productos) {
             if (busca.getNombre() == p) {
                 if (busca.getCantidad() < a ) {
                     cout <<"No hay tanto producto para vender" << endl;
@@ -56,9 +61,13 @@ void Distribuidora::vender(Cliente cliente, string p, int a) {
                 else {
                     busca.setCantidad(busca.getCantidad() - a);
                     capital += busca.valortotal();
-                    cliente.compraRealizada();
                     cout << "Venta realizada" << endl;
                 }
+            }
+        }
+        for (auto & cliente : this->clientes) {
+            if (cliente.getNombre() == p) {
+                cliente.compraRealizada();
             }
         }
     }
@@ -107,6 +116,14 @@ void Distribuidora::agregarClientes(const string & fichero)  {
     }
     fich.close();
 };
+
+void Distribuidora::agregarProducto(string cNombre, int cCantidad, double cPrecio) {
+    productos.emplace_back(cNombre,cCantidad,cPrecio);
+}
+
+void Distribuidora::agregarCliente(string cNombre, string cId, string cUbicacion, int cCompras) {
+    clientes.emplace_back(cNombre,cId,cUbicacion,cCompras);
+}
 
 void Distribuidora::productosExistentes() {
     for (auto busca : this->productos) {

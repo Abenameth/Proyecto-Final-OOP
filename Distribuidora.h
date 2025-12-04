@@ -14,7 +14,6 @@ using namespace std;
 
 class Distribuidora {
 private:
-    string check;
     vector<Producto> productos;
     vector<Cliente> clientes;
     double gastos;
@@ -22,15 +21,18 @@ private:
 
 public:
     Distribuidora();
-    Distribuidora(string cCheck, vector<Producto> cProductos, vector<Cliente> cClientes);
+    Distribuidora(vector<Producto> cProductos, vector<Cliente> cClientes);
 
     double getGastos();
 
-    void abastecer(Producto b, int a);
-    void vender(Cliente cliente, string p, int a);
+    void abastecer(string b, int a);
+    void vender(string c, string p, int a);
     bool estaProducto(string nombre);
+    bool estaCliente(string nombre);
     void agregarProductos(const string& Fichero);
     void agregarClientes(const string& Fichero);
+    void agregarProducto(string cNombre, int cCantidad, double cPrecio);
+    void agregarCliente(string cNombre, string cId, string cUbicacion, int cCompras);
     void productosExistentes();
     void mostrarClientes();
     void exportarProductos();
