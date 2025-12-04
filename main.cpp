@@ -13,7 +13,7 @@ int main() {
     distribuidora1.agregarClientes(fichero);
     int opcion = 0;
     string opcionStr = "";
-    while (opcion != 8) {
+    while (opcion != 10) {
         cout << "MENU"<<endl;
         cout << "1-Abastecer"<<endl;
         cout << "2-Vender"<<endl;
@@ -23,7 +23,8 @@ int main() {
         cout << "6-Mostrar productos"<<endl;
         cout << "7-Exportar productos"<<endl;
         cout << "8-Exportar clientes"<<endl;
-        cout << "9-Salir"<<endl;
+        cout << "9-Mostrar datos de distribuidora"<<endl;
+        cout << "10-Salir"<<endl;
         cin >> opcionStr;
         try {
             opcion = stoi(opcionStr);
@@ -98,6 +99,10 @@ int main() {
                 break;
             }
             case 9: {
+                cout << distribuidora1 << endl;
+                break;
+            }
+            case 10: {
                 cout <<"Salir"<<endl;
                 break;
             }
