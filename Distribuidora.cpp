@@ -37,18 +37,18 @@ bool Distribuidora::estaCliente(string name) {
 void Distribuidora::abastecer(string a, int b) {
     if (estaProducto(a)) {
     for (auto &busca : this->productos) {
-        if (busca.getNombre() == a && (busca.getPrecio() * b) < capital) {
+        if (busca.getNombre() == a && (busca.getPrecio() * b) <= capital) {
             busca.setCantidad(busca.getCantidad() + b);
             capital -= busca.getPrecio() * b;
             gastos += busca.getPrecio() * b;
         }
         else if (busca.getNombre() == a && (b * busca.getPrecio())> capital) {
-            cout << "dinero insuficiente para abastecer"<<endl;
+            cout << "Capital insuficiente para abastecer esta cantidad de producto."<<endl;
         }
     }
     }
     else {
-        cout << "Este producto no existe debe de añadirlo"<< endl;
+        cout << "Este producto no existe, debe de añadirlo"<< endl;
     }
 }
 
@@ -57,24 +57,24 @@ void Distribuidora::vender(string c, string p, int a) {
         for (auto & busca : this->productos) {
             if (busca.getNombre() == p) {
                 if (busca.getCantidad() < a ) {
-                    cout <<"No hay tanto producto para vender" << endl;
+                    cout <<"No se tiene en existencia la cantidad de producto solicitada." << endl;
                 }
                 else {
                     capital += a*busca.getPrecio();
                     busca.setCantidad(busca.getCantidad() - a);
-                    cout << "Venta realizada" << endl;
+                    cout << "Venta realizada." << endl;
                 }
             }
         }
         for (auto & cliente : this->clientes) {
             if (cliente.getNombre() == c) {
                 cliente.compraRealizada();
-                break;
+                return;
             }
         }
     }
     else {
-        cout << "Este producto no existe, debe de añadirlo"<< endl;
+        cout << "Este producto/cliente no existe, debe de añadirlo"<< endl;
     }
 }
 
@@ -85,7 +85,7 @@ void Distribuidora::agregarProductos(const string & fichero)  {
         return;
     }
     if (fich.peek() == ifstream::traits_type::eof()) {
-        cout << "El archivo está vacío o no tiene el formato adecuado" << endl;
+        cout << "El archivo está vacío o no tiene el formato adecuado." << endl;
         return;
     }
     string nombre;
@@ -112,7 +112,7 @@ void Distribuidora::agregarClientes(const string & fichero)  {
         exit(1);
     }
     if (fich.peek() == ifstream::traits_type::eof()) {
-        cout << "El archivo está vacío o no tiene el formato adecuado" << endl;
+        cout << "El archivo está vacío o no tiene el formato adecuado." << endl;
         exit(2);
     }
     string nombre,id,ubicacion;
@@ -156,7 +156,7 @@ void Distribuidora::exportarProductos() {
     ofstream fich;
     fich.open("./exportproductos.csv");
     if (!fich.is_open()) {
-        cout <<"No se abrio fichero";
+        cout <<"No se abrio fichero.";
         return;
     }
     fich << "Nombre,Cantidad,Precio" << endl;
@@ -169,7 +169,7 @@ void Distribuidora::exportarClientes() {
     ofstream fich;
     fich.open("./exportclientes.csv");
     if (!fich.is_open()) {
-        cout <<"No se abrio fichero";
+        cout <<"No se abrio fichero.";
         return;
     }
     fich << "Nombre,ID,Ubicacion,Compras"<<endl;
